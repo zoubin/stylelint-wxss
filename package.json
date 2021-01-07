@@ -1,13 +1,13 @@
 {
   "name": "stylelint-wxss",
   "version": "0.1.0",
-  "description": "",
+  "description": "A collection of WXSS specific linting rules for [stylelint](https://github.com/stylelint/stylelint) (in a form of plugin).",
   "main": "index.js",
   "scripts": {
     "test": "tap test/*.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "zoubin",
   "license": "ISC",
   "devDependencies": {
     "stylelint": "^13.8.0",
@@ -15,5 +15,18 @@
   },
   "dependencies": {
     "postcss-selector-parser": "^6.0.4"
-  }
+  },
+  "directories": {
+    "example": "example",
+    "lib": "lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zoubin/stylelint-wxss.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zoubin/stylelint-wxss/issues"
+  },
+  "homepage": "https://github.com/zoubin/stylelint-wxss#readme"
 }
