@@ -1,0 +1,19 @@
+{
+  "name": "stylelint-wxss",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "stylelint": "^13.8.0",
+    "tap": "^14.11.0"
+  },
+  "dependencies": {
+    "postcss-selector-parser": "^6.0.4"
+  }
+}

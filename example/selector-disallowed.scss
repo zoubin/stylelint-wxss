@@ -1,0 +1,11 @@
+// allowed
+.container { height: 15px; }
+.abc .container { height: 15px; }
+.abc > .container { height: 15px; }
+.abc, .container { height: 15px; }
+.abc.container { height: 15px; }
+
+// disallowed
+input { height: 15px; }
+.input #input { height: 15px; }
+[href].input { height: 15px; }
