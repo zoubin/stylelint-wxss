@@ -11,7 +11,7 @@ npm install stylelint stylelint-wxss
 Create the configuration file `stylelint.config.js`:
 ```js
 module.exports = {
-  plugins: ['../'],
+  plugins: ['stylelint-wxss'],
   rules: {
     'wxss/selector-disallowed': ['tag', 'id', 'attribute']
   }
