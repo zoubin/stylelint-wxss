@@ -1,4 +1,6 @@
 const { utils } = require('stylelint')
+const isKeyframeSelector = require('stylelint/lib/utils/isKeyframeSelector')
+const isStandardSyntaxTypeSelector = require('stylelint/lib/utils/isStandardSyntaxTypeSelector');
 const parser = require('postcss-selector-parser')
 const namespace = require('../lib/namespace')
 const name = 'selector-disallowed'
@@ -30,6 +32,12 @@ function plugin(primaryOption, secondaryOptionObject) {
 
     root.walkRules(rule => {
       processor.astSync(rule.selector).walk(selector => {
+        if (isKeyframeSelector(selector.value)) {
+          return;
+        }
+        if (selector.type===TAG && !isStandardSyntaxTypeSelector(selector)) {
+          return;
+        }
         if (primaryOption.includes(selector.type)) {
           const message = utils.ruleMessages(ruleName, {
             rejected: `Selector: "${selector.toString()}" is disallowed.`
