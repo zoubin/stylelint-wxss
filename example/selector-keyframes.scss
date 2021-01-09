@@ -1,0 +1,12 @@
+@keyframes animation {
+  0% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(1.01);
+  }
+}
+
+input {
+  color: red;
+}

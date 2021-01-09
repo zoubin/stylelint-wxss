@@ -1,5 +1,5 @@
 const path = require('path')
-const { test } = require('tap')
+const { test, only } = require('tap')
 const { lint } = require('stylelint')
 const config = {
   plugins: ['../'],
@@ -7,6 +7,21 @@ const config = {
     'wxss/selector-disallowed': ['tag', 'id', 'attribute']
   }
 }
+
+test('invalid options', async function (t) {
+  const { results: [ { invalidOptionWarnings } ] } = await lint({
+    configBasedir: __dirname,
+    code: '.input #input { height: 15px; }',
+    config: {
+      plugins: ['../'],
+      rules: {
+        'wxss/selector-disallowed': ['nonexisting']
+      }
+    }
+  })
+  t.equal(invalidOptionWarnings.length, 1)
+})
+
 test('allowed selectors', async function (t) {
   const code = [
     '.container { height: 15px; }',
@@ -39,20 +54,6 @@ test('disallowed selectors', async function (t) {
   t.ok(errored)
   t.equal(warnings.length, code.length)
   t.equal(parseErrors.length, 0)
-})
-
-test('invalid options', async function (t) {
-  const { results: [ { invalidOptionWarnings } ] } = await lint({
-    configBasedir: __dirname,
-    code: '.input #input { height: 15px; }',
-    config: {
-      plugins: ['../'],
-      rules: {
-        'wxss/selector-disallowed': ['tag', 'selector', 'attribute']
-      }
-    }
-  })
-  t.equal(invalidOptionWarnings.length, 1)
 })
 
 test('string primary options', async function (t) {

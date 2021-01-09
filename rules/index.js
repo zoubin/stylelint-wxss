@@ -1,4 +1,7 @@
-module.exports = ['selector-disallowed'].reduce((rules, next) => {
+const ruleNames = [
+  'selector-disallowed'
+]
+module.exports = ruleNames.reduce((rules, next) => {
   rules[next] = require(`./${next}`)
   return rules
 }, {})
