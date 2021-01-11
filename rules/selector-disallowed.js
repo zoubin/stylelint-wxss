@@ -1,5 +1,4 @@
 const { utils } = require('stylelint')
-const parser = require('postcss-selector-parser')
 
 const namespace = require('../lib/namespace')
 const VALID_SELECTORS = require('../lib/valid-selectors')
@@ -10,13 +9,11 @@ const name = 'selector-disallowed'
 const ruleName = namespace(name)
 
 function plugin(disallowedList) {
-  const selectorWalker = createSelectorWalker(parser())
-
   return (root, result) => {
     const validOptions = utils.validateOptions(result, ruleName, { actual: disallowedList, possible: VALID_SELECTORS })
     if (!validOptions) return
 
-    walkRules(root, selectorWalker((selector, rule) => {
+    walkRules(root, createSelectorWalker((selector, rule) => {
       if (!disallowedList.includes(selector.type)) return
       const message = utils.ruleMessages(ruleName, {
         rejected: `Selector type disallowed: "${selector.type}" ("${selector.toString()}")`
