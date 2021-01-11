@@ -1,0 +1,15 @@
+.abc .xyz, .wyz {
+  &__input {
+    color: red;
+  }
+  &:hover {
+    color: red;
+  }
+  [dir=rtl] & {
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  & > .input {
+    color: red;
+  }
+}

@@ -40,6 +40,27 @@ test('allowed selectors', async function (t) {
   t.equal(parseErrors.length, 0)
 })
 
+test('nested falsy tags', async function (t) {
+  const code = `
+   .form {
+     &__input {
+       color: red;
+     }
+     input {
+       color: green;
+     }
+   }
+  `
+
+  const {
+    results: [ { errored, warnings, parseErrors } ]
+  } = await lint({ configBasedir: __dirname, code, config })
+
+  t.ok(errored)
+  t.equal(warnings.length, 1)
+  t.equal(parseErrors.length, 0)
+})
+
 test('disallowed selectors', async function (t) {
   const code = [
     'input { height: 15px; }',

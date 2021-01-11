@@ -8,12 +8,21 @@ const createSelectorWalker = require('../lib/createSelectorWalker')
 const name = 'selector-disallowed'
 const ruleName = namespace(name)
 
+function isNestedFalsyTag(selector) {
+  if (selector.type !== 'tag') return false
+  let prev = selector.prev()
+  return prev && prev.type === 'nesting'
+}
+
 function plugin(disallowedList) {
   return (root, result) => {
     const validOptions = utils.validateOptions(result, ruleName, { actual: disallowedList, possible: VALID_SELECTORS })
     if (!validOptions) return
 
     walkRules(root, createSelectorWalker((selector, rule) => {
+      // ignore `&__input`
+      // leave the task of checking `&` elsewhere
+      if (isNestedFalsyTag(selector)) return
       if (!disallowedList.includes(selector.type)) return
       const message = utils.ruleMessages(ruleName, {
         rejected: `Selector type disallowed: "${selector.type}" ("${selector.toString()}")`
