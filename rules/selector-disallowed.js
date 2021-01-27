@@ -14,7 +14,8 @@ function isNestedFalsyTag(selector) {
   return prev && prev.type === 'nesting'
 }
 
-function plugin(disallowedList) {
+function plugin(disallowedList, options = {}) {
+  const exclude = options.exclude || {}
   return (root, result) => {
     const validOptions = utils.validateOptions(result, ruleName, { actual: disallowedList, possible: VALID_SELECTORS })
     if (!validOptions) return
@@ -24,6 +25,12 @@ function plugin(disallowedList) {
       // leave the task of checking `&` elsewhere
       if (isNestedFalsyTag(selector)) return
       if (!disallowedList.includes(selector.type)) return
+      if (
+        exclude[selector.type] &&
+        exclude[selector.type].includes(
+          selector.value || selector._value || selector._attribute
+        )
+      ) return
       const message = utils.ruleMessages(ruleName, {
         rejected: `Selector type disallowed: "${selector.type}" ("${selector.toString()}")`
       })

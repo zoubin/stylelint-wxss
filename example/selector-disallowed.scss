@@ -4,6 +4,7 @@
 .abc > .container { height: 15px; }
 .abc, .container { height: 15px; }
 .abc.container { height: 15px; }
+page { font-size: 18px; }
 
 // disallowed
 input { height: 15px; }

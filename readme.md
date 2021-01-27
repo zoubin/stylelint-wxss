@@ -13,7 +13,11 @@ Create the configuration file `stylelint.config.js`:
 module.exports = {
   plugins: ['stylelint-wxss'],
   rules: {
-    'wxss/selector-disallowed': ['tag', 'id', 'attribute']
+    'wxss/selector-disallowed': [['tag', 'id', 'attribute'], {
+      exclude: {
+        tag: ['page']
+      }
+    }]
   }
 }
 

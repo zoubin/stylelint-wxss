@@ -77,6 +77,35 @@ test('disallowed selectors', async function (t) {
   t.equal(parseErrors.length, 0)
 })
 
+test('disallowed selectors with exclude', async function (t) {
+  const code = [
+    'input { height: 15px; }',
+    '.container { height: 15px; }',
+    '[href] { height: 15px; }'
+  ].join('\n')
+  const {
+    results: [ { errored, warnings, parseErrors } ]
+  } = await lint({
+    configBasedir: __dirname, code,
+    config: {
+      plugins: ['../'],
+      rules: {
+        'wxss/selector-disallowed': [ ['tag', 'class', 'attribute'], {
+          exclude: {
+            tag: ['input'],
+            class: ['container'],
+            attribute: ['href'],
+          }
+        }]
+      }
+    }
+  })
+
+  t.notOk(errored)
+  t.equal(warnings.length, 0)
+  t.equal(parseErrors.length, 0)
+})
+
 test('string primary options', async function (t) {
   const { results: [ { invalidOptionWarnings } ] } = await lint({
     configBasedir: __dirname,
