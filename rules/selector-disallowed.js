@@ -4,6 +4,7 @@ const namespace = require('../lib/namespace')
 const VALID_SELECTORS = require('../lib/valid-selectors')
 const walkRules = require('../lib/walkRules')
 const createSelectorWalker = require('../lib/createSelectorWalker')
+const multimatch = require('multimatch')
 
 const name = 'selector-disallowed'
 const ruleName = namespace(name)
@@ -14,9 +15,10 @@ function isNestedFalsyTag(selector) {
   return prev && prev.type === 'nesting'
 }
 
-function plugin(disallowedList, options = {}) {
-  const exclude = options.exclude || {}
+function plugin(disallowedList, { exclude = Object.create(null), glob } = {}) {
   return (root, result) => {
+    if (glob && !multimatch(root.source.input.file, glob).length) return
+
     const validOptions = utils.validateOptions(result, ruleName, { actual: disallowedList, possible: VALID_SELECTORS })
     if (!validOptions) return
 

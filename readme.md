@@ -13,10 +13,36 @@ Create the configuration file `stylelint.config.js`:
 module.exports = {
   plugins: ['stylelint-wxss'],
   rules: {
-    'wxss/selector-disallowed': [['tag', 'id', 'attribute'], {
+    'wxss/selector-disallowed': ['tag']
+  }
+}
+
+```
+
+### `options.exclude`
+```js
+module.exports = {
+  plugins: ['stylelint-wxss'],
+  rules: {
+    'wxss/selector-disallowed': [['tag'], {
       exclude: {
         tag: ['page']
       }
+    }]
+  }
+}
+
+```
+
+### `options.glob`
+`glob` options: [multimatch](https://github.com/sindresorhus/multimatch#globbing-patterns)
+```js
+module.exports = {
+  plugins: ['stylelint-wxss'],
+  rules: {
+    'wxss/selector-disallowed': [['tag'], {
+      // skip lint files under component directory
+      glob: ['**', '!**/component/**']
     }]
   }
 }

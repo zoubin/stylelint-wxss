@@ -130,3 +130,30 @@ test('scss', async function (t) {
   t.equal(parseErrors.length, 0)
 })
 
+test('glob', async function (t) {
+  const {
+    results: [ result1, result2 ]
+  } = await lint({
+    configBasedir: __dirname,
+    files: [
+      path.join(__dirname, 'fixture/selector-disallowed.scss'),
+      path.join(__dirname, 'fixture/component/selector-disallowed.scss')
+    ],
+    config: {
+      plugins: ['../'],
+      rules: {
+        'wxss/selector-disallowed': [['tag'], {
+          glob: ['**/component/**']
+        }]
+      }
+    }
+  })
+
+  t.ok(!result1.errored)
+  t.equal(result1.warnings.length, 0)
+  t.equal(result1.parseErrors.length, 0)
+  t.ok(result2.errored)
+  t.equal(result2.warnings.length, 2)
+  t.equal(result2.parseErrors.length, 0)
+})
+
