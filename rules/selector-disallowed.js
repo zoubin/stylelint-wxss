@@ -1,4 +1,5 @@
 const { utils } = require('stylelint')
+const isKeyframeRule = require('stylelint/lib/utils/isKeyframeRule')
 
 const namespace = require('../lib/namespace')
 const VALID_SELECTORS = require('../lib/valid-selectors')
@@ -26,6 +27,10 @@ function plugin(disallowedList, { exclude = Object.create(null), glob } = {}) {
       // ignore `&__input`
       // leave the task of checking `&` elsewhere
       if (isNestedFalsyTag(selector)) return
+      // 如果当前规则在 @keyframes 内，就直接返回
+      if (isKeyframeRule(rule)) {
+        return;
+      }
       if (!disallowedList.includes(selector.type)) return
       if (
         exclude[selector.type] &&
