@@ -157,3 +157,41 @@ test('glob', async function (t) {
   t.equal(result2.parseErrors.length, 0)
 })
 
+
+test('@keyframes selectors should not trigger the rule', async function (t) {
+  const {
+    results: [ result ]
+  } = await lint({
+    configBasedir: __dirname,
+    code: `
+      @keyframes loading-animation {
+        0% {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(1turn);
+        }
+      }
+      view {
+        animation: loading-animation 2s infinite linear;
+      }
+    `,
+    config: {
+      plugins: ['../'],
+      rules: {
+        'wxss/selector-disallowed': [['tag'],{
+          componentOnly: true,
+          severity: 'error',
+          exclude: {
+            tag: ['view'],
+          },
+        },]
+      }
+    }
+  })
+
+  // 我们只关心这个CSS是否没有错误
+  t.ok(!result.errored)
+  t.equal(result.warnings.length, 0)   // 确保没有警告
+  t.equal(result.parseErrors.length, 0) // 确保没有解析错误
+})
